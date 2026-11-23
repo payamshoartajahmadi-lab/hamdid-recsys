@@ -1,2 +1,44 @@
-# hamdid-recsys
-Hamdid recommender system — phase 01 Python package foundation and quality checks.
+# هم‌دید | Hamdid
+
+هم‌دید (`hamdid-recsys`) پروژهٔ یک سامانهٔ توصیه‌گر است. این نسخه فقط پایهٔ قابل نصب پایتون و کنترل کیفیت فاز ۰۱ را فراهم می‌کند. نام توزیع `hamdid-recsys`، نام بستهٔ پایتون `hamdid` و نسخهٔ اولیه `0.1.0.dev0` است. داده، مدل توصیه‌گر، API و رابط کاربری هنوز پیاده‌سازی نشده‌اند؛ ورودی خط فرمان فعلی تنها راهنما و نسخه را ارائه می‌کند.
+
+## پیش‌نیازها
+
+- Git و هویت نویسندهٔ تنظیم‌شده با `git config user.name` و `git config user.email`.
+- Python 3.12 و `uv` نسخهٔ `0.13.9`، همسان با CI.
+- دسترسی به مخزن عمومی `hamdid-recsys` با کامیت اولیه، شاخهٔ پیش‌فرض `main` و شاخهٔ `dev` از همان کامیت.
+
+کاربر در ۲۰۲۶-۱۱-۲۳ مستقیماً ایجاد مخزن **عمومی** [payamshoartajahmadi-lab/hamdid-recsys](https://github.com/payamshoartajahmadi-lab/hamdid-recsys) با حساب واردشدهٔ مرورگر و آماده‌سازی اولیهٔ `main` و `dev` را مجاز کرد. این مجوز یک‌باره جایگزین پیش‌نیاز مخزن خصوصیِ آماده در سند اصلی است؛ ادامهٔ کار با PR به `dev` و بدون ادغام انجام می‌شود.
+
+## نصب و بررسی از clone تازه
+
+```bash
+git clone https://github.com/payamshoartajahmadi-lab/hamdid-recsys.git
+cd hamdid-recsys
+git fetch origin --prune
+git switch chore/01-repository-foundation
+uv sync --locked --group dev
+uv run --locked python -m hamdid --version
+uv run --locked python -m hamdid --help
+uv run --locked ruff format --check .
+uv run --locked ruff check .
+uv run --locked pytest -q
+git diff --check
+```
+
+دستور نسخه باید دقیقاً `0.1.0.dev0` را چاپ کند. نمونهٔ بالا شاخهٔ قابل بازبینی فاز ۰۱ را نصب می‌کند؛ پس از ادغام توسط سرپرست می‌توان `dev` را checkout کرد. تست‌ها فرمان پایتون را در یک دایرکتوری موقت خارج از ریشه اجرا می‌کنند تا نصب واقعی بسته و رفتار نسخه، راهنما و آرگومان نامعتبر بررسی شود.
+
+وابستگی runtime در این فاز وجود ندارد. ابزارهای توسعه در گروه `dev` جدا شده‌اند و `uv.lock` نتیجهٔ resolver را ثبت می‌کند. برای بازتولید بررسی‌ها از `--locked` استفاده کنید؛ تغییر عمدی وابستگی‌ها با `uv lock` انجام و بازبینی می‌شود.
+
+## فازها و جریان شاخه‌ها
+
+| بخش | وضعیت و مرز کار |
+| --- | --- |
+| فاز ۰۱، HD-01 | بسته‌بندی پایتون، ورودی نسخه و راهنما، تست، مستندات و CI |
+| فاز ۰۲ و مراحل بعد | خارج از مأموریت جاری؛ شرح رسمی آن‌ها هنوز تحویل نشده است |
+
+نقشهٔ راه و مجموعهٔ کامل اسناد کارآموزی هنوز در دسترس نیستند. فهرست اسناد موجود و کمبودها در [نمایهٔ مستندات](docs/README.md) ثبت شده است؛ این جدول جایگزین نقشهٔ راه رسمی نیست.
+
+کار فاز روی `chore/01-repository-foundation` از `dev` انجام می‌شود و با PR، بررسی سرپرست و موفقیت job ثابت `quality` به روش **Squash and merge** وارد `dev` می‌شود. `main` در این فاز تغییر نمی‌کند. ادغام انتشار از `dev` به `main` تصمیم جداگانهٔ سرپرست است و با merge انتشار انجام می‌شود؛ `dev` حذف نمی‌شود.
+
+راهنمای نام‌گذاری، بازتولید CI و بازگشت تغییرات در [CONTRIBUTING.md](CONTRIBUTING.md) و حدود مأموریت در [AGENTS.md](AGENTS.md) آمده است. اجرای GitHub Actions و آماده‌بودن برای بازبینی باید در PR با نتیجهٔ واقعی ثبت شود؛ وجود فایل workflow به معنی اجرای موفق CI نیست.
