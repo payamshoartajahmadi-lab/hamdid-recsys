@@ -1,0 +1,48 @@
+# Python environments and generated files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.cache/
+.uv-cache/
+.uv_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+
+# Local credentials and configuration
+.env
+.env.*
+kaggle.json
+
+# Real datasets, models, and local reports
+/data/raw/
+/data/processed/
+/artifacts/
+/reports/local/
+
+# Runtime databases and their journals
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+
+# Small synthetic database fixtures may be versioned.
+!/tests/fixtures/**/*.db
+!/tests/fixtures/**/*.sqlite
+!/tests/fixtures/**/*.sqlite3
+
+# Editor and operating-system output
+.DS_Store
+.idea/
+.vscode/
