@@ -1,46 +1,29 @@
 # مشارکت در هم‌دید
 
-## پیش از شروع فاز
+مالک مخزن کارآموز را با سطح **Write** به همکاران [hamdid-recsys](https://github.com/payamshoartajahmadi-lab/hamdid-recsys) اضافه می‌کند. کارآموز دعوت را با حساب خودش می‌پذیرد و Git، هویت نویسنده، Python 3.12 و `uv 0.13.9` را آماده می‌کند.
 
-مقصد پروژه مخزن **عمومی** `hamdid-recsys` است. کاربر در ۲۰۲۶-۱۱-۲۳ صریحاً ایجاد آن با حساب واردشدهٔ مرورگر، کامیت اولیهٔ README، شاخهٔ پیش‌فرض `main` و شاخهٔ `dev` از همان کامیت را مجاز کرد. این bootstrap یک‌باره استثنای پیش‌نیاز مخزن خصوصیِ آماده در سند اصلی است؛ نسخهٔ اصلی سند تغییر نمی‌کند. ایجاد PR فاز به `dev` مجاز است و ادغام آن در این تحویل انجام نمی‌شود.
+## شاخهٔ شخصی و PR
 
-برای ادامهٔ مشارکت، دسترسی همکاری و آدرس remote، Python 3.12، `uv 0.13.9` و هویت نویسندهٔ Git را بررسی کنید. در نبود پیش‌نیاز یا سند لازم، گزارش `BLOCKED` بدهید؛ ایجاد دوبارهٔ مخزن یا شاخه‌های پایه مشمول استثنای bootstrap نیست.
-
-در clone تازه و پیش از شروع اولین فاز، تأیید کنید هر دو SHA زیر همان کامیت bootstrap هستند. مالک مخزن `payamshoartajahmadi-lab` است.
+هر کار از آخرین `dev` شروع می‌شود. برای قابلیت از `feature/<short-name>` و برای اصلاح از `fix/<short-name>` استفاده کنید؛ نام شاخهٔ زیر یک نمونه است:
 
 ```bash
 git clone https://github.com/payamshoartajahmadi-lab/hamdid-recsys.git
 cd hamdid-recsys
-git remote -v
 git fetch origin --prune
-git branch -r
-git status --short
-git rev-parse origin/main origin/dev
-git switch --no-track -c chore/01-repository-foundation origin/dev
+git switch --no-track -c feature/my-task origin/dev
 ```
 
-در صورت مغایرت remote، نبود شاخه یا کار قبلی چیزی را حذف یا reset نکنید. اگر شاخهٔ فاز از قبل وجود دارد، برای ادامه با سرپرست هماهنگ کنید. پس از bootstrap، push مستقیم به `main` یا `dev` ممنوع است؛ force-push در تمام مراحل ممنوع است.
+در clone موجود، قبل از ساخت شاخه وضعیت کار را با `git status` بررسی کنید و تغییرات قبلی را حفظ کنید. کار مستقیم روی `main` و force-push مجاز نیست؛ تغییرات `dev` با PR وارد می‌شوند.
 
-## نام‌گذاری و PR
-
-شاخهٔ این فاز `chore/01-repository-foundation` و عنوان PR آن `chore(repo): establish project foundation and CI` است. کامیت‌های کوچک و قابل بازبینی با عنوان انگلیسی و الگوی `type(scope): description` بنویسید؛ برای نمونه:
-
-```text
-build(python): configure locked development environment
-test(cli): verify package entry point
-```
-
-فقط شاخهٔ فاز را push کنید و PR را با **base = `dev`** و **compare = `chore/01-repository-foundation`** بسازید:
+کامیت‌ها را کوتاه و روشن بنویسید؛ برای نمونه `feat(ranking): add candidate scoring` یا `fix(cli): clarify help output`. سپس شاخهٔ خودتان را push کنید:
 
 ```bash
-git push -u origin chore/01-repository-foundation
+git push -u origin feature/my-task
 ```
 
-[قالب PR](.github/pull_request_template.md) را با نتیجهٔ واقعی پر کنید و سرپرست را برای بازبینی درخواست کنید. گزارش باید آخرین SHA، لینک CI، فرمان‌ها و تعداد تست، نصب پاک، ریسک و روش بازگشت را داشته باشد. در نبود PR یا CI مقدار ناموجود را صریح بنویسید؛ آن را موفق گزارش نکنید.
+PR را با **base = `dev`** و **compare = شاخهٔ خودتان** بسازید. [قالب PR](.github/pull_request_template.md) را با شرح تغییرات و نتیجهٔ واقعی بررسی‌ها پر کنید. پس از تکمیل کار و موفقیت job `quality` روی آخرین تغییرات، کارآموز می‌تواند PR خودش را در `dev` ادغام کند؛ بازبینی یا تأیید اجباری سرپرست لازم نیست. بررسی pending، اجرا‌نشده، ناموفق یا لغوشده مجوز ادغام نیست.
 
-## بازتولید کنترل‌های CI
-
-قفل با resolver و دستور `uv lock` ساخته یا عمداً به‌روزرسانی می‌شود. بررسی‌ها قفل را تغییر نمی‌دهند:
+## بررسی پیش از ادغام
 
 ```bash
 uv sync --locked --group dev
@@ -49,37 +32,12 @@ uv run --locked ruff check .
 uv run --locked pytest -q
 uv run --locked python -m hamdid --version
 git diff --check
-```
-
-برای PR فاز، پس از fetch کردن مقصد، whitespace تغییرات واقعی را هم بررسی کنید؛ diff خالی یک checkout پاک کافی نیست:
-
-```bash
 git fetch origin dev
 git diff --check origin/dev...HEAD
-git diff --cached --check
-git diff --cached --name-only
-git check-ignore .venv/probe .env .env.local kaggle.json data/raw/probe data/processed/probe artifacts/probe reports/local/probe runtime.sqlite3
 ```
 
-مسیرهای ممنوع باید ignored باشند و یک نمونهٔ کوچک ساختگی نظیر `tests/fixtures/example.json` نباید ignored باشد. وجود داده یا اسرار واقعی را پیش از stage کردن بررسی کنید. در CI فرمت و lint فقط بررسی می‌کنند و فایل را اصلاح نمی‌کنند. workflow روی PRهای مقصد `dev` یا `main` و push به این دو شاخه اجرا می‌شود و job مورد انتظار آن `quality` است.
+برای تغییر عمدی وابستگی‌ها، `uv lock` را اجرا و تغییر قفل را commit کنید؛ بررسی‌های عادی با `--locked` قفل را به‌روزرسانی نمی‌کنند. CI همین کنترل‌ها را در job ثابت `quality` اجرا می‌کند و فرمت یا lint فایل‌ها را اصلاح نمی‌کند.
 
-پس از آخرین کامیت، در مسیر تازه‌ای خارج از checkout کاری یک worktree بسازید و کنترل‌های بالا را دوباره اجرا کنید. `CLEAN_PATH` در نمونه مسیر جدید و دلخواه شماست:
+پیش از commit فهرست فایل‌ها را با `git diff --cached --name-only` کنترل کنید. دادهٔ واقعی، مدل، اسرار، فایل‌های محیطی و خروجی اجرا نباید وارد مخزن شوند؛ `.gitignore` این مسیرها را مشخص می‌کند. نمونهٔ کوچک ساختگی زیر `tests/fixtures/` مجاز است.
 
-```bash
-git worktree add --detach CLEAN_PATH HEAD
-cd CLEAN_PATH
-uv sync --locked --group dev
-uv run --locked ruff format --check .
-uv run --locked ruff check .
-uv run --locked pytest -q
-uv run --locked python -m hamdid --version
-git diff --check
-```
-
-## بازبینی، ادغام و بازگشت
-
-کارآموز PR را merge نمی‌کند. سرپرست قابلیت نصب تازه، تست واقعی آرگومان نامعتبر، محدودهٔ فاز و نبود داده یا اسرار را بازبینی می‌کند. `quality` باید روی آخرین تغییرات PR اجرا شده و موفق باشد؛ نتیجهٔ pending، لغوشده یا اجرا‌نشده پذیرفته نیست. پس از تأیید، سرپرست PR فاز را با **Squash and merge** به `dev` می‌برد و لینک PR و SHA ادغام را ثبت می‌کند. `main` در فاز ۰۱ روی bootstrap می‌ماند.
-
-ادغام فازها و انتشار دو عملیات جدا هستند. شاخهٔ هر فاز به `dev` squash می‌شود؛ در یک انتشار مجاز آینده، سرپرست PR جداگانهٔ `dev` به `main` را با merge commit ادغام می‌کند تا تاریخ شاخه‌های بلندمدت حفظ شود. شاخهٔ `dev` حذف نمی‌شود و فاز ۰۲ پیش از تأیید فاز ۰۱ آغاز نمی‌شود.
-
-برای rollback، یک شاخهٔ اصلاحی از `dev` بسازید و کامیت squash ثبت‌شدهٔ همان PR را با `git revert MERGE_SHA` برگردانید. نتیجه از PR جدید، همان تست‌ها و بازبینی سرپرست عبور می‌کند؛ تاریخ را بازنویسی یا force-push نکنید. اگر بازگشت یک انتشار آینده لازم باشد، سرپرست PR بازگشت متناسب با merge commit انتشار را بررسی می‌کند.
+اگر تغییر ادغام‌شده مشکل داشت، روی شاخهٔ جدید از `dev` با `git revert` آن را برگردانید و PR اصلاحی بسازید؛ تاریخ را بازنویسی نکنید. اسناد اولیهٔ پروژه سابقه‌اند و دریافت بقیهٔ آن‌ها شرط مشارکت نیست.
